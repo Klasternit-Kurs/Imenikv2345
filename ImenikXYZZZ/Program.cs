@@ -13,10 +13,11 @@ namespace ImenikXYZZZ
 		//Stampaje i brisanje i sve to :) 
 		//Za odvazne, artikal ima i kolicinu na stanju, koja moze da se doda
 		//ili oduzme (ne sme da dodje ispod 0 :) )
+
+		//TODO Artikal kao objekat :) sifru, naziv, ulaznu cenu i marzu 
 		static void Main(string[] args)
 		{
-			List<string> Imena = new List<string>();
-			List<string> BrTel = new List<string>();
+			List<Osoba> Imenik = new List<Osoba>();
 
 			string unos ="";
 			while (unos != "5")
@@ -25,20 +26,20 @@ namespace ImenikXYZZZ
 				
 				unos = Console.ReadKey().KeyChar.ToString();
 				Console.WriteLine();
-				PrikaziMeni();
-				switch(unos)
+
+				switch (unos)
 				{
 					case "1":
-						Unos(Imena, BrTel);
+						Unos(Imenik);
 						break;
 					case "2":
-						Prikaz(Imena, BrTel);
+						Prikaz(Imenik);
 						break;
 					case "3":
-						Pretraga(Imena, BrTel);
+						Pretraga(Imenik);
 						break;
 					case "4":
-						Brisanje(Imena, BrTel);
+						Brisanje(Imenik);
 						break;
 					case "5":
 						Console.WriteLine("Bye :D");
@@ -48,50 +49,63 @@ namespace ImenikXYZZZ
 			Console.ReadKey();
 		}
 
-		static void Brisanje(List<string> Imena, List<string> BrTel)
+		static void Brisanje(List<Osoba> Imenik)
 		{
 			//TODO Brisanje napraviti tako sto se unese ime a 
 			// ne indeks. Obratiti paznju na to da opet
 			//morate da nadjete indeks sami jer morate da
 			//obrisete broj iz druge liste :)
+
 			Console.Write("Unesite indeks: ");
-			int ind = int.Parse(Console.ReadLine()) - 1;
-			Imena.RemoveAt(ind);
-			BrTel.RemoveAt(ind);
+
+			Imenik.RemoveAt(int.Parse(Console.ReadLine()) - 1);
 		}
 
-		static void Pretraga(List<string> Imena, List<string> BrTel)
+		static void Pretraga(List<Osoba> Lista)
 		{
-			Console.Write("Unesite ime: ");
+			Console.Write("Pretraga: ");
 			string ime = Console.ReadLine();
-			for (int indeks = 0; indeks < Imena.Count; indeks++)
-			{
-				if (Imena[indeks].ToLower().Contains(ime.ToLower()))
+
+			foreach(Osoba o in Lista)
+			{            
+ 				if (o.Ime.ToLower().Contains(ime.ToLower())  ||  o.Prezime.ToLower().Contains(ime.ToLower()))
 				{
-					Console.WriteLine($"{indeks + 1}. {Imena[indeks]} ---- {BrTel[indeks]}");
+					Console.WriteLine($"{o.Ime} {o.Prezime} ---- {o.Telefon}");
 				}
 			}
 		}
 
-		static void Prikaz(List<string> Imena, List<string> BrTel)
+		static void Prikaz(List<Osoba> lista)
 		{
-			for (int indeks = 0; indeks < Imena.Count; indeks++)
+			//for (int indeks = 0; indeks < lista.Count; indeks++)
+			//{
+			//	Console.WriteLine($"{indeks + 1}. {lista[indeks].Ime} {lista[indeks].Prezime} ---- {lista[indeks].Telefon}");
+			//}
+
+			foreach (Osoba o in lista)
 			{
-				Console.WriteLine($"{indeks + 1}. {Imena[indeks]} ---- {BrTel[indeks]}");
+				Console.WriteLine($"{o.Ime} {o.Prezime} ---- {o.Telefon}");
 			}
 		}
 
-		static void Unos(List<string> Imena, List<string> Brojevi)
+		static void Unos(List<Osoba> osobe)
 		{
 			//TODO Popraviti stvar tako da korisnik ne sme da unese
 			//nista za ime :) 
 			//Ako imate string ime, ime.Length ce da vam da
 			//broj karaktera. Pored toga, string.IsNullOrEmpty(ime)
-			//kaze true ako je string prazan :) 
-			Console.Write("Unesite ime i prezime: ");
-			Imena.Add(Console.ReadLine());
+			//kaze true ako je string prazan :)
+
+
+			Osoba o = new Osoba();
+			osobe.Add(o);
+
+			Console.Write("Unesite ime: ");
+			o.Ime = Console.ReadLine();
+			Console.Write("Unesite prezime: ");
+			o.Prezime = Console.ReadLine();
 			Console.Write("Unesite tel:  ");
-			Brojevi.Add(Console.ReadLine());
+			o.Telefon = Console.ReadLine();
 		}
 
 		static void PrikaziMeni()
@@ -104,5 +118,12 @@ namespace ImenikXYZZZ
 			Console.WriteLine("----------------");
 			Console.Write("Izaberite: ");
 		}
+	}
+
+	class Osoba
+	{
+		public string Ime;
+		public string Prezime;
+		public string Telefon;
 	}
 }
